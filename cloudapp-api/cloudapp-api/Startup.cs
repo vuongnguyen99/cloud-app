@@ -1,7 +1,11 @@
+using cloudapp_core.Interface.Users;
+using cloudapp_core.Service;
+using cloudapp_data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,8 +29,12 @@ namespace cloudapp_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<CloudDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CloudApp")));
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddTransient<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

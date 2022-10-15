@@ -14,5 +14,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\cloudapp-core\cloudapp-core.csproj" />
+    <ProjectReference Include="..\cloudapp-data\cloudapp-data.csproj" />
+  </ItemGroup>
+
 
 </Project>
