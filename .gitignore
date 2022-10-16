@@ -1,0 +1,18 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+
+/cloudapp-api/cloudapp-test/obj
+/cloudapp-api/.vs
+/cloudapp-api/cloudapp-api/obj/Debug/
+/cloudapp-api/cloudapp-api/obj
+/cloudapp-api/cloudapp-core/obj
+/cloudapp-api/cloudapp-data/obj
+/cloudapp-ui/public
+/cloudapp-ui
+/cloudapp-api/cloudapp-core/bin/Debug/
+/cloudapp-api/cloudapp-data/bin/Debug/
+/cloudapp-api/cloudapp-test/bin/Debug/
+/cloudapp-api/cloudapp-api/bin/Debug/
+/cloudapp-api/cloudapp-data/Migrations
