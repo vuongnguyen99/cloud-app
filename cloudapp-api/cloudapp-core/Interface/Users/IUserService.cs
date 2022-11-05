@@ -11,6 +11,6 @@ namespace cloudapp_core.Interface.Users
 {
     public interface IUserService
     {
-        Task<User> CreateNewUser(CreateNewUserRequest request, CancellationToken cancellationToken); 
+        //Task<User> CreateNewUser(CreateNewUserRequest request, CancellationToken cancellationToken); 
     }
 }
