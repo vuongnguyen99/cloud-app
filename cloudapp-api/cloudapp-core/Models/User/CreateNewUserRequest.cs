@@ -8,6 +8,7 @@ namespace cloudapp_core.Models.User
 {
     public class CreateNewUserRequest
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
@@ -17,3 +18,4 @@ namespace cloudapp_core.Models.User
         public bool? UnsubcribedEmail { get; set; }
     }
 }
+    
