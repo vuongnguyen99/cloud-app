@@ -86,6 +86,7 @@ namespace cloudapp_data.Context
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("Role");
+                entity.HasIndex(x => x.Id);
 
                 entity.HasIndex(x => x.Guid);
 

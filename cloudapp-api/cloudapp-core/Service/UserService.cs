@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using cloudapp_core.Common;
-using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace cloudapp_core.Service
 {
@@ -21,51 +22,65 @@ namespace cloudapp_core.Service
             _context = context;
         }
 
-        //public async Task<User> CreateNewUser(CreateNewUserRequest request, CancellationToken cancellationToken)
-        //{
-        //    var user = new CreateNewUserRequest()
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        FirstName = request.FirstName,
-        //        LastName = request.LastName,
-        //        UserName = request.UserName,
-        //        Email = request.Email,
-        //        DateOfBirth = request.DateOfBirth,
-        //        Password = HashSHA256(request.Password),
-        //        UnsubcribedEmail = request.UnsubcribedEmail
-        //    };
-
-        //     _context.Add(user);
-        //    await _context.SaveChangesAsync(cancellationToken);
-        //    return new User
-        //    {
-        //        Id = request.Id,
-        //        FirstName = request.FirstName,
-        //        LastName = request.LastName,
-        //        UserName = request.UserName,
-        //        Email = request.Email,
-        //        DateOfBirth = request.DateOfBirth,
-        //        Created = DateTime.UtcNow,
-        //        Password = HashSHA256(request.Password),
-        //        UnsubcribedEmail = request.UnsubcribedEmail,
-        //        CountLoginFail =0
-        //    };
-        //}
-
-        private string HashSHA256(string str)
+        public Task<User> GetRoleByUserId(Guid Id)
         {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                // Compute the hash of the given string
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(str));
+            throw new NotImplementedException();
+        }
 
-                StringBuilder stringbuilder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
+        public async Task<User> CreateNewUser(CreateNewUserRequest request, CancellationToken cancellationToken)
+        {
+            var userNameReq = request.UserName.ToLower();
+            var userObj = await _context.Users.FirstOrDefaultAsync(c => c.UserName == userNameReq, cancellationToken);
+            if(userObj != null)
+            {
+                var objectError = new List<object>();
+                if(userObj.UserName == userNameReq)
                 {
-                    stringbuilder.Append(bytes[i].ToString("x2"));
+                    objectError.Add( new { field = "UserName", message = "UserName is already exist"});
                 }
-                return stringbuilder.ToString();
+                var jsonString = JsonSerializer.Serialize(objectError);
+                throw new Exception(jsonString);
             }
+            var newUser = new User()
+            {
+                Guid = Guid.NewGuid(),
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName,
+                Email = request.Email,
+                Password = Crypto.HashPassword(request.Password),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                ModifiedDate = DateTime.UtcNow,
+            };
+
+            await _context.Users.AddAsync(newUser, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            // assign role for user
+            //var role =  _context.Roles;
+            //var userRole = new List<UserRole>();
+            //foreach (var items in role)
+            //{
+            //    var urItem = new UserRole
+            //    {
+            //        Id = items.Id,
+            //        UserId = newUser.Id,
+            //        RoleId = role.Id
+                    
+            //    };
+            //}
+
+            return new User
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName,
+                Email = request.Email,
+                Password = Crypto.HashPassword(request.Password),
+                CountLoginFail = 0
+            };
+
         }
     }
 }
