@@ -3,6 +3,12 @@
 Technical: + Frontend: Reactjs, TypeScript + Backend: ASP.Net core 3.1 + Database: SQL Server 2018
 Tools: + Visual Studio 2022 + Visual Studio Code + SQL Server 2018 + Git
 
+Target:
+
+- Log: serial log
+- Realtime (Chat + push Notification): Firebase
+- Caching: Redis
+
 Config and run project Api:
 
 - Clone source at: https://github.com/vuongnguyen99/cloud-app.git
